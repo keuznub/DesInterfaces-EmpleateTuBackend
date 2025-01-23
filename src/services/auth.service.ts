@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient()
-const TOKEN_PASSWORD = process.env.TOKEN_PASSWORD || "pass"
+const TOKKEN_PASSWORD = process.env.TOKKEN_PASSWORD || "pass"
 export class AuthService {
     static async register(user: User) {
         const findUser = await prisma.user.findUnique(
@@ -19,7 +19,7 @@ export class AuthService {
         return await prisma.user.create(
             {
                 data: {
-                    ...user, password: passwordEncrypted, role: null
+                    ...user, password: passwordEncrypted, role: "admin"
                 },
                 omit: {
                     password: true
@@ -31,18 +31,15 @@ export class AuthService {
     }
 
     static async login(user: User){
-        const findUser = await prisma.user.findUnique({
-            where:{
-                email:user.email
-            }
-        })
+        const findUser = await prisma.user.findUnique({where:{email:user.email}})
+        
         if(!findUser) throw new Error("No existe el usuario")
         
         const rightPassword = await bcrypt.compare(user.password,findUser.password)
 
         if(!rightPassword) throw new Error("Password Incorrecta")
 
-        const token = jwt.sign({id:findUser.id, role:findUser.role}, TOKEN_PASSWORD, {expiresIn:"1h"})
+        const token = jwt.sign({id:findUser.id, role:findUser.role, email:findUser.email}, TOKKEN_PASSWORD, {expiresIn:"1h"})
         return token
     }   
 

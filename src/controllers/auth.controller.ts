@@ -27,8 +27,9 @@ export class AuthController{
             res.status(409).json({message:"Fallo al registrar al usuario", Error:e.message})
         }
         
-        
     }
+
+ 
 }
 
 
