@@ -1,30 +1,37 @@
+import { HttpException } from "@/exceptions/HttpException";
 import { AuthService } from "../services/auth.service";
-import {Response, Request} from "express"
+import {Response, Request, NextFunction} from "express"
 
 
 export class AuthController{
 
-    static async login(req:Request,res:Response){
+    static async login(req:Request,res:Response, next:NextFunction){
         try{
             const userData = req.body
             //TODO validar body
             const token = await AuthService.login(userData)
             //TODO inyectar cookie en cliente
+            res.cookie('token', token, {
+                maxAge:60*60*1000, //1h de caducidad
+                httpOnly:true, //Asi no se puede modificar con js
+                //secure:true, //Solo se envia si usas https
+                sameSite:"strict" //Solo valida si viene del mismo alojamiento front-back, evita ataques CSRF
+            })
             res.status(201).json({message:"user login succesfully", token})
-        }catch(e:any){
-            res.status(409).json({message:"Fallo al logearse", Error:e.message})
+        }catch(error){
+            next(error)
         }
 
     }
 
-    static async register(req:Request,res:Response){
+    static async register(req:Request,res:Response, next:NextFunction){
         try{
             const userData = req.body
             console.log(userData)
             const newUser = await AuthService.register(userData)
             res.status(201).json({message:"user register succesfully", newuser:newUser})
-        }catch(e:any){
-            res.status(409).json({message:"Fallo al registrar al usuario", Error:e.message})
+        }catch(error){
+            next(error)
         }
         
     }

@@ -1,7 +1,7 @@
 ```bash
 npm init -y
 npm -D typescript tsx @types/node
-npm tsc --init
+npx tsc --init
 
 npm i express
 npm i -D @types/express
@@ -12,8 +12,14 @@ npm i prisma @prisma/client
 
 
 npm i jsonwebtoken @types/jsonwebtoken
+npm i bcrypt @types/bcrypt
+npm i express-rate-limit #limita las peticiones maximas por tiempo
+npm i helmet #analiza los headers y determina si es un ataque o no
+npm i compression #hace las url mas cortas y mas rapidas
 
+npm i cookie-parser #para trabajar con cookies e inyectar
 
+npm i express-validator
 ```
 ## Arquitectura
 En proyectos muy muy grandes hay quer usar hexagonal

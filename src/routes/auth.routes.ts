@@ -1,14 +1,15 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/auth.controller";
-
+import { isValidLogin } from "@/middlewares/auth.middleware";
+import {registerValidation, ValidationMiddleware, loginValidation} from '../middlewares/validators.middleware'
 
 
 const router = Router()
 
 
-router.post("/login", AuthController.login)
+router.post("/login",loginValidation,ValidationMiddleware, AuthController.login)
 //router.post("/logout", AuthController.logout)
-router.post("/register", AuthController.register)
+router.post("/register",registerValidation,ValidationMiddleware, AuthController.register)
 
 
 

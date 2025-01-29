@@ -1,36 +1,44 @@
 import { NextFunction, Request, Response } from "express"
 import jwt from "jsonwebtoken"
+import {HttpException} from 'exceptions/HttpException'
 
-const TOKKEN_PASSWORD = process.env.TOKKEN_PASSWORD || "pass"
+const TOKEN_PASSWORD = process.env.TOKEN_PASSWORD || "pass"
 
 export function isAuthenticate(req:Request, res:Response, next:NextFunction):any{
-    //Esto devuelve "bearer tokken.. hay que deshacerse del bearer"
-    const tokkenReceived = req.headers.authorization?.split(" ")[1]
-    if(!tokkenReceived) return res.status(401).json({error:"Access Denied"})
+    //Esto devuelve "bearer token.. hay que deshacerse del bearer"
+    const tokenReceived = req.cookies.token
+    if(!tokenReceived) return res.status(401).json({error:"Access Denied"})
 
     try{
-        const tokkenDecodificado = jwt.verify(tokkenReceived,TOKKEN_PASSWORD)
-        req.body.user = tokkenDecodificado
+        const tokenDecodificado = jwt.verify(tokenReceived,TOKEN_PASSWORD)
+        req.body.user = tokenDecodificado
         next()
     }catch{
-        res.status(401).json({error:"Invalid tokken"})
+        res.status(401).json({error:"Invalid token"})
     }
 }
 
 
 export function isAdmin(req:Request, res:Response, next:NextFunction):any{
-    //Esto devuelve "bearer tokken.. hay que deshacerse del bearer"
-    const tokkenReceived = req.headers.authorization?.split(" ")[1]
-    if(!tokkenReceived) return res.status(401).json({error:"Access Denied"})
-
     try{
-        const tokkenDecodificado = jwt.verify(tokkenReceived,TOKKEN_PASSWORD)
-        req.body.user = tokkenDecodificado
         const user = req.body.user
-        console.log(user);
-        if(user.role!="admin") throw new Error("No permission")
+        if(user.role!="admin") throw new HttpException(401,"No permission")
         next()
     }catch(e:any){
-        res.status(401).json({error:"Invalid tokken", message:e})
+        res.status(401).json({error:"Invalid token", message:e})
+    }
+}
+
+
+export function isValidLogin(req:Request, res:Response, next:NextFunction):any{
+    try{
+        const {email, password} = req.body
+        const regex : RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+        if(!email.match(regex)) throw new HttpException(401,"Invalid email")
+        if(password.lenght<4) throw new HttpException(401,"Invalid password")
+        next()
+
+    }catch(e:any){
+        res.status(401).json({error:e.message})
     }
 }
