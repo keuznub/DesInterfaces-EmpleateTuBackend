@@ -1,7 +1,7 @@
 import { PrismaClient, User } from "prisma/prisma-client";
 import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken";
-import { HttpException } from "@/exceptions/HttpException";
+import { HttpException } from "../exceptions/HttpException";
 
 const prisma = new PrismaClient()
 const TOKEN_PASSWORD = process.env.TOKEN_PASSWORD || "pass"
@@ -25,5 +25,7 @@ export class UserService {
         if (!findUsers) throw new HttpException(404,"Users not found")
         return findUsers
     }
+
+    
 
 }

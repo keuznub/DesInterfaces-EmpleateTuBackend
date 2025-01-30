@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { OffertController } from "../controllers/offert.controller";
-import { isValidLogin } from "@/middlewares/auth.middleware";
+import { isValidLogin } from "../middlewares/auth.middleware";
 import {registerValidation, ValidationMiddleware, loginValidation} from '../middlewares/validators.middleware'
 
 
@@ -16,9 +16,9 @@ router.delete("/:id", OffertController.delete)
 router.put("/:id", OffertController.update) 
 
 //POST Calificamos la oferta x {body}
-router.post('/:id/rate', OffertController.rate)
+//router.post('/:id/rate', OffertController.rate)
 //Vemos que calificacion (total) se le ha dado au una oferta
-router.get('/:id/rate', OffertController.getRate)
+//router.get('/:id/rate', OffertController.getRate)
 
 export default router
 

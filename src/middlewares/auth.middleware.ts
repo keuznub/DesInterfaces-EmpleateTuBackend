@@ -7,14 +7,14 @@ const TOKEN_PASSWORD = process.env.TOKEN_PASSWORD || "pass"
 export function isAuthenticate(req:Request, res:Response, next:NextFunction):any{
     //Esto devuelve "bearer token.. hay que deshacerse del bearer"
     const tokenReceived = req.cookies.token
-    if(!tokenReceived) return res.status(401).json({error:"Access Denied"})
+    if(!tokenReceived) throw new HttpException(404,"Token not found")
 
     try{
         const tokenDecodificado = jwt.verify(tokenReceived,TOKEN_PASSWORD)
         req.body.user = tokenDecodificado
         next()
-    }catch{
-        res.status(401).json({error:"Invalid token"})
+    }catch(error){
+        next(error)
     }
 }
 
@@ -25,7 +25,7 @@ export function isAdmin(req:Request, res:Response, next:NextFunction):any{
         if(user.role!="admin") throw new HttpException(401,"No permission")
         next()
     }catch(e:any){
-        res.status(401).json({error:"Invalid token", message:e})
+        next(e)
     }
 }
 
@@ -39,6 +39,6 @@ export function isValidLogin(req:Request, res:Response, next:NextFunction):any{
         next()
 
     }catch(e:any){
-        res.status(401).json({error:e.message})
+        next(e)
     }
 }

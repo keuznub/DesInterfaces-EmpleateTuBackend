@@ -27,7 +27,7 @@ app.get("/", (req:Request,res:Response)=>{
 
 app.use('/api/auth',authRouter)
 app.use('/api/users',userRouter)
-app.use('/api/offerts',offertRouter)
+app.use('/api/offers',offertRouter)
 
 
 export default app
