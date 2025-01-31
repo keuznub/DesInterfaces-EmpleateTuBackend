@@ -6,6 +6,8 @@ import { HttpException } from "../exceptions/HttpException";
 const prisma = new PrismaClient()
 const TOKEN_PASSWORD = process.env.TOKEN_PASSWORD || "pass"
 export class UserService {
+
+    
     static async getByEmail(email: string) {
         const findUser = await prisma.user.findUnique({ where: { email:email } })
         if (!findUser) throw new HttpException(404,"User not found")

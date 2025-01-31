@@ -19,7 +19,11 @@ const limiter = rateLimit({
     windowMs: 1000*15*60//15minutos
 })
 app.use(limiter)
-app.use(cors())
+app.use(cors({
+    origin: '*',
+    methods:['GET','POST','PUT','DELETE'],
+    credentials:true
+}))
 
 app.get("/", (req:Request,res:Response)=>{
     res.send('Bienvenido')

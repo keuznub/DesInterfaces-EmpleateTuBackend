@@ -20,6 +20,9 @@ npm i compression #hace las url mas cortas y mas rapidas
 npm i cookie-parser #para trabajar con cookies e inyectar
 
 npm i express-validator
+
+#Database External URL en .env y agregamos .env a enviroments de la pagina, en este caso Render
+#prisma:migrate prisma:generate prisma:deploy
 ```
 ## Arquitectura
 En proyectos muy muy grandes hay quer usar hexagonal
