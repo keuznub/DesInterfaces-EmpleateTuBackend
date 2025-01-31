@@ -15,7 +15,7 @@ export class OfferService {
     }
 
     static async getAll() {
-        const findOffers = await prisma.user.findMany()
+        const findOffers = await prisma.offer.findMany()
         if (!findOffers) throw new HttpException(404,"Offers not found")
         return findOffers
     }
@@ -34,12 +34,12 @@ export class OfferService {
         return prisma.offer.delete({where:{id}})
     }
 
-    static async update(offer: Offer){
-        const findOffer = prisma.offer.findUnique({where:{id:offer.id}})
+    static async update(id:number,offer: Offer){
+        const findOffer = prisma.offer.findUnique({where:{id}})
         if(!findOffer) throw new HttpException(404,'Offer not found')
         return prisma.offer.update({
         data:offer,
-        where:{id:offer.id}})
+        where:{id}})
     }
 
 }

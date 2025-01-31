@@ -32,6 +32,7 @@ app.get("/", (req:Request,res:Response)=>{
 app.use('/api/auth',authRouter)
 app.use('/api/users',userRouter)
 app.use('/api/offers',offertRouter)
+app.use('/api/categories',offertRouter)
 
 
 export default app
