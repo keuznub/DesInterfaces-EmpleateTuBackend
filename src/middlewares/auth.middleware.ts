@@ -28,17 +28,3 @@ export function isAdmin(req:Request, res:Response, next:NextFunction):any{
         next(e)
     }
 }
-
-
-export function isValidLogin(req:Request, res:Response, next:NextFunction):any{
-    try{
-        const {email, password} = req.body
-        const regex : RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
-        if(!email.match(regex)) throw new HttpException(401,"Invalid email")
-        if(password.lenght<4) throw new HttpException(401,"Invalid password")
-        next()
-
-    }catch(e:any){
-        next(e)
-    }
-}

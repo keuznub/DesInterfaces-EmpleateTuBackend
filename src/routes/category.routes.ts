@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { CategoryController } from "../controllers/category.controller";
-import { isAdmin, isAuthenticate, isValidLogin } from "../middlewares/auth.middleware";
+import { isAdmin, isAuthenticate } from "../middlewares/auth.middleware";
 import {registerValidation, ValidationMiddleware, loginValidation} from '../middlewares/validators.middleware'
 
 

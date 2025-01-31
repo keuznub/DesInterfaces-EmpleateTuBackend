@@ -40,7 +40,6 @@ model Offer {
   location          String?
   publised          DateTime @default(now()) //iso 8601
   expired           DateTime
-  aceptNotifications Boolean @default(true)
   
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
